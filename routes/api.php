@@ -9,6 +9,4 @@ Route::get('/user', function (Request $request) {
 
 use App\Http\Controllers\ProductoController;
 
-// Rutas para productos
-
-Route::get('productos', [ProductoController::class, 'index']);
+Route::get('/productos', [ProductoController::class, 'index']);
