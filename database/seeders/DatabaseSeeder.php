@@ -16,10 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Crea un usuario con un nombre de usuario y contraseña conocidos
+
         User::create([
-            'username' => 'camilo', // Nombre de usuario conocido
-            'password' => Hash::make('camilo27'), // Contraseña conocida
+            'username' => 'empleado1', // Nombre de usuario conocido
+            'password' => Hash::make('prueba1'), // Contraseña conocida
         ]);
+        
 
         // Llama a otros seeders si los necesitas
         // $this->call(OtherSeeder::class);

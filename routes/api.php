@@ -26,3 +26,9 @@ Route::put('/pedidos/{id}', [PedidoController::class, 'update']);
 
 // Ruta para eliminar un pedido
 Route::delete('/pedidos/{id}', [PedidoController::class, 'destroy']);
+
+use App\Http\Controllers\AuthController;
+
+// Ruta para el login
+Route::post('/login', [AuthController::class, 'login']);
+
