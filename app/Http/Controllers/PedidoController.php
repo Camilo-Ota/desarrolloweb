@@ -158,4 +158,88 @@ class PedidoController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * Listar pedidos por estado (Para empleados).
+     *
+     * @param string $estado
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function listarPorEstado($estado)
+    {
+        try {
+            $pedidos = Pedido::where('estado', $estado)->get();
+
+            return response()->json([
+                'message' => 'Pedidos obtenidos exitosamente.',
+                'pedidos' => $pedidos,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocurrió un error al obtener los pedidos.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Listar pedidos por cliente (para empleados).
+     *
+     * @param string $cliente
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function listarPorCliente($cliente)
+    {
+        try {
+            // Filtrar los pedidos por el nombre del cliente
+            $pedidos = Pedido::where('nombre', 'LIKE', '%' . $cliente . '%')->get();
+
+            return response()->json([
+                'message' => 'Pedidos obtenidos exitosamente.',
+                'pedidos' => $pedidos,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocurrió un error al obtener los pedidos.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Actualizar el estado de un pedido (Para empleados).
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEstado(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'estado' => 'required|string|in:pendiente,atendido',
+        ]);
+
+        try {
+            $pedido = Pedido::findOrFail($id);
+
+            // Actualizar el estado
+            $pedido->estado = $validated['estado'];
+            $pedido->save();
+
+            return response()->json([
+                'message' => 'Estado del pedido actualizado exitosamente.',
+                'pedido' => $pedido,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ocurrió un error al actualizar el estado del pedido.',
+                'error' => $e->getMessage(),
+            ], 404);
+        }
+    }
+
+
+
+
+
 }

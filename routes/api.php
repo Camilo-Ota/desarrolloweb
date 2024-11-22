@@ -32,3 +32,19 @@ use App\Http\Controllers\AuthController;
 // Ruta para el login
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::middleware(['auth.jwt'])->group(function () {
+    // Rutas para gestión de pedidos
+    Route::get('/empleados/pedidos', [PedidoController::class, 'indexEmpleado']); // Listar todos los pedidos
+    Route::get('/empleados/pedidos/estado/{estado}', [PedidoController::class, 'listarPorEstado']); // Filtrar por estado
+    Route::get('/empleados/pedidos/cliente/{cliente}', [PedidoController::class, 'listarPorCliente']); // Filtrar por cliente
+    Route::put('/empleados/pedidos/{id}', [PedidoController::class, 'updateEstado']); // Actualizar estado del pedido
+
+    // Ruta para cerrar sesión
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::options('/{any}', function () {
+    return response('', 200)->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+})->where('any', '.*');
